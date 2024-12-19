@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Reflection;
 
-namespace Aptabase.Maui;
+namespace Aptabase.Core;
 
 internal class AptabaseClientBase : IAsyncDisposable
 {
@@ -20,7 +20,7 @@ internal class AptabaseClientBase : IAsyncDisposable
     {
         { "US", "https://us.aptabase.com" },
         { "EU", "https://eu.aptabase.com" },
-        { "DEV", DeviceInfo.Platform == DevicePlatform.Android ? "https://10.0.2.2:3000" : "https://localhost:3000" },
+        { "DEV", OperatingSystem.IsAndroid() ? "https://10.0.2.2:3000" : "https://localhost:3000" },
         { "SH", "" },
     };
 

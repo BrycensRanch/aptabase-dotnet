@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
-namespace Aptabase.Maui;
+namespace Aptabase.Core;
 
 internal class SystemInfo
 {
@@ -21,11 +22,11 @@ internal class SystemInfo
 	{
         OsName = GetOsName();
         OsVersion = GetOsVersion();
-        DeviceModel = DeviceInfo.Current.Model;
-        SdkVersion = $"Aptabase.Maui@{_pkgVersion}";
+        DeviceModel = GetDeviceModel();
+        SdkVersion = $"{Assembly.GetExecutingAssembly().GetName()}@{_pkgVersion}";
         Locale = Thread.CurrentThread.CurrentCulture.Name;
-        AppVersion = AppInfo.Current.VersionString;
-        AppBuildNumber = AppInfo.Current.BuildString;
+        AppVersion = Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? string.Empty;
+        AppBuildNumber = Assembly.GetEntryAssembly()?.GetName().Version?.Build.ToString() ?? string.Empty;
     }
         
     internal static bool IsInDebugMode(Assembly? assembly)
@@ -46,34 +47,29 @@ internal class SystemInfo
     }
 
     private static string GetOsName()
-	{
-		var platform = DeviceInfo.Current.Platform;
-		if (platform == DevicePlatform.Android)
-			return "Android";
+    {
+        if (OperatingSystem.IsAndroid())
+            return "Android";
 
-        if (platform == DevicePlatform.WinUI)
+        if (OperatingSystem.IsWindows())
             return "Windows";
+    
+        
+        if (OperatingSystem.IsMacOS()) return "macOS";
+        if (OperatingSystem.IsTvOS()) return "tvOS";
+        if (OperatingSystem.IsWatchOS()) return "watchOS";
+        // iPadOS is bundled as iOS as well. It's hard to tell the difference from pure .NET
+        if (OperatingSystem.IsIOS()) return "iOS";
 
-        if (platform == DevicePlatform.macOS || platform == DevicePlatform.MacCatalyst)
-            return "macOS";
+        if (OperatingSystem.IsLinux()) return DistroDetect.GetLinuxDistro();
+        if (OperatingSystem.IsFreeBSD()) return "FreeBSD";
 
-        if (platform == DevicePlatform.tvOS)
-            return "tvOS";
 
-        if (platform == DevicePlatform.watchOS)
-            return "watchOS";
+        return string.Empty;
+    }
 
-        if (platform == DevicePlatform.Tizen)
-            return "Tizen";
-
-        if (platform == DevicePlatform.iOS)
-        {
-            if (DeviceInfo.Current.Idiom == DeviceIdiom.Tablet && DeviceInfo.Current.Version.Major >= 13)
-                return "iPadOS";
-
-            return "iOS";
-        }
-
+    private static string GetDeviceModel()
+    {
         return "";
     }
 
@@ -83,7 +79,7 @@ internal class SystemInfo
         var osVersion = Foundation.NSProcessInfo.ProcessInfo.OperatingSystemVersion;
         return $"{osVersion.Major}.{osVersion.Minor}.{osVersion.PatchVersion}";
 #else
-        return DeviceInfo.Current.VersionString;
+        return OperatingSystem.IsLinux() ? DistroDetect.GetLinuxDistroVersion() : Environment.OSVersion.Version.ToString();
 #endif
     }
 }

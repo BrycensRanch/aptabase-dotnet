@@ -3,8 +3,9 @@ using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Channels;
+using Xdg.Directories;
 
-namespace Aptabase.Maui;
+namespace Aptabase.Core;
 
 public class AptabasePersistentClient : IAptabaseClient
 {
@@ -26,7 +27,7 @@ public class AptabasePersistentClient : IAptabaseClient
             SingleReader = true,
             ReliableEnumeration = true,
             PartitionCapacity = _maxPersistedEvents,
-            Location = Path.Combine(FileSystem.CacheDirectory, "EventData"),
+            Location = Path.Combine(BaseDirectory.CacheHome, "Aptabase", "EventData"),
         });
         _logger = logger;
         _cts = new CancellationTokenSource();

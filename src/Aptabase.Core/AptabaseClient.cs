@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
 
-namespace Aptabase.Maui;
+namespace Aptabase.Core;
 
 public class AptabaseClient : IAptabaseClient
 {

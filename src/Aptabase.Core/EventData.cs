@@ -1,4 +1,4 @@
-﻿namespace Aptabase.Maui;
+﻿namespace Aptabase.Core;
 
 internal class EventData
 {

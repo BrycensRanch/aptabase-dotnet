@@ -1,18 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Aptabase.Core;
+using Microsoft.Extensions.Logging;
 
 namespace Aptabase.Maui;
 
-public class AptabaseCrashReporter
+public class AptabaseMauiCrashReporter
 {
     private readonly IAptabaseClient _client;
-    private readonly ILogger<AptabaseCrashReporter>? _logger;
+    private readonly ILogger<AptabaseMauiCrashReporter>? _logger;
 
 #if ANDROID
     // the UnhandledExceptionRaiser fires first, but others may fire redundantly soon after
     private bool _nativeThrown;
 #endif
 
-    public AptabaseCrashReporter(IAptabaseClient client, ILogger<AptabaseCrashReporter>? logger)
+    public AptabaseMauiCrashReporter(IAptabaseClient client, ILogger<AptabaseMauiCrashReporter>? logger)
     {
         _client = client;
         _logger = logger;

@@ -1,4 +1,4 @@
-﻿namespace Aptabase.Maui;
+﻿namespace Aptabase.Core;
 
 /// <summary>
 /// Aptabase client used for tracking events

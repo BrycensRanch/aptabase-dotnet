@@ -1,3 +1,8 @@
+## 0.2.0
+
+* Add `Aptabase.Core` for generic .NET support (Does not support crash reporter)
+* Use [XDG.Directories](https://www.nuget.org/packages/Xdg.Directories) Cache Directory across all .NET SDKs (This was a requirement for Aptabase.Core) 
+
 ## 0.1.0
 
 * Add `EnablePersistence` to persist events on disk before sending them to the server

@@ -1,4 +1,4 @@
-﻿namespace Aptabase.Maui;
+﻿namespace Aptabase.Core;
 
 /// <summary>
 /// Initialization options for the Aptabase Client

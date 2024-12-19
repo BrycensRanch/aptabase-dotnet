@@ -1,4 +1,5 @@
-﻿using Aptabase.Maui;
+﻿using Aptabase.Core;
+using Aptabase.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Maui.Hosting;
@@ -6,7 +7,7 @@ namespace Microsoft.Maui.Hosting;
 /// <summary>
 /// Aptabase extensions for <see cref="MauiAppBuilder"/>.
 /// </summary>
-public static class AptabaseExtensions
+public static class MauiExtensions
 {
     /// <summary>
     /// Uses Aptabase integration.
@@ -34,7 +35,7 @@ public static class AptabaseExtensions
             if (options?.EnableCrashReporting == true)
 
             {
-                _ = new AptabaseCrashReporter(client, loggerFactory.CreateLogger<AptabaseCrashReporter>());
+                _ = new AptabaseMauiCrashReporter(client, loggerFactory.CreateLogger<AptabaseMauiCrashReporter>());
             }
 
             return client;
