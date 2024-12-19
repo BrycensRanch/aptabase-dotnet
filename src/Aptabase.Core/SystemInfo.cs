@@ -22,7 +22,7 @@ internal class SystemInfo
 	{
         OsName = GetOsName();
         OsVersion = GetOsVersion();
-        DeviceModel = GetDeviceModel();
+        DeviceModel = DeviceDetect.GetDeviceModel();
         SdkVersion = $"{Assembly.GetExecutingAssembly().GetName()}@{_pkgVersion}";
         Locale = Thread.CurrentThread.CurrentCulture.Name;
         AppVersion = Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? string.Empty;
@@ -66,11 +66,6 @@ internal class SystemInfo
 
 
         return string.Empty;
-    }
-
-    private static string GetDeviceModel()
-    {
-        return "";
     }
 
     private static string GetOsVersion()
