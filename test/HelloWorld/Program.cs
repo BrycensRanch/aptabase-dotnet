@@ -10,7 +10,7 @@ services.AddLogging(builder =>
     builder.SetMinimumLevel(LogLevel.Debug);
 });
 
-services.UseAptabase("A-US-0332858461", new AptabaseOptions
+services.UseAptabase("A-EU-1687478437", new AptabaseOptions
 {
 #if DEBUG
     IsDebugMode = true,
