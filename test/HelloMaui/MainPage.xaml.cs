@@ -1,6 +1,6 @@
-﻿using Aptabase.Maui;
+﻿using Aptabase.Core;
 
-namespace HelloWorld;
+namespace HelloMaui;
 
 public partial class MainPage : ContentPage
 {

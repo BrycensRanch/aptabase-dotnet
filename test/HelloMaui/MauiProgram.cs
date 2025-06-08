@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using Aptabase.Maui;
+﻿using Aptabase.Core;
+using Microsoft.Extensions.Logging;
 
-namespace HelloWorld;
+namespace HelloMaui;
 
 public static class MauiProgram
 {

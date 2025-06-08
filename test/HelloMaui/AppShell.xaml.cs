@@ -1,4 +1,4 @@
-﻿namespace HelloWorld;
+﻿namespace HelloMaui;
 
 public partial class AppShell : Shell
 {

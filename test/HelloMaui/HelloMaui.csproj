@@ -6,17 +6,17 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
-		<RootNamespace>HelloWorld</RootNamespace>
+		<RootNamespace>HelloMaui</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<MauiVersion>8.0.70</MauiVersion>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>HelloWorld</ApplicationTitle>
+		<ApplicationTitle>HelloMaui</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.helloworld</ApplicationId>
+		<ApplicationId>com.companyname.hellomaui</ApplicationId>
 		<ApplicationIdGuid>91c837fe-e892-450c-8365-a45127a53bc3</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -56,6 +56,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Aptabase.Maui\Aptabase.Maui.csproj" />
+		<ProjectReference Include="..\..\src\Aptabase.Maui\Aptabase.Maui.csproj" />
+	  <ProjectReference Include="..\..\src\Aptabase.Core\Aptabase.Core.csproj" />
 	</ItemGroup>
 </Project>
