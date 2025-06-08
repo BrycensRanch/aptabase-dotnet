@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace Aptabase.Core;
 
 internal class SystemInfo
 {
-    private static readonly string _pkgVersion = typeof(AptabaseClient).Assembly
-        .GetCustomAttribute<AssemblyFileVersionAttribute>()!.Version;
+    private const string PkgName = "Aptabase.NET";
+    private static readonly Assembly PkgAssembly = Assembly.GetExecutingAssembly();
+    private static readonly string PkgVersion = PkgAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>()!.Version;
 
     public bool IsDebug { get; set; }
     public string OsName { get; }
@@ -23,7 +23,7 @@ internal class SystemInfo
         OsName = GetOsName();
         OsVersion = GetOsVersion();
         DeviceModel = DeviceDetect.GetDeviceModel();
-        SdkVersion = $"{Assembly.GetExecutingAssembly().GetName()}@{_pkgVersion}";
+        SdkVersion = $"{PkgName}@{PkgVersion}";
         Locale = Thread.CurrentThread.CurrentCulture.Name;
         AppVersion = Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? string.Empty;
         AppBuildNumber = Assembly.GetEntryAssembly()?.GetName().Version?.Build.ToString() ?? string.Empty;
