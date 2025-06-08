@@ -1,9 +1,9 @@
-﻿using DotNext.Threading.Channels;
+﻿using System.Runtime.InteropServices;
+using DotNext.Threading.Channels;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Channels;
-using Xdg.Directories;
 
 namespace Aptabase.Core;
 
@@ -27,13 +27,50 @@ public class AptabasePersistentClient : IAptabaseClient
             SingleReader = true,
             ReliableEnumeration = true,
             PartitionCapacity = _maxPersistedEvents,
-            Location = Path.Combine(BaseDirectory.CacheHome, "Aptabase", "EventData"),
+            Location = Path.Combine(CacheHome, "Aptabase", "EventData"),
         });
         _logger = logger;
         _cts = new CancellationTokenSource();
         _processingTask = Task.Run(ProcessEventsAsync);
     }
 
+    private static string CacheHome =>
+        Environment.GetEnvironmentVariable("XDG_CACHE_HOME")
+        ?? GetCurrentPlatform() switch
+        {
+            var platform when platform == OSPlatform.Windows
+                => Environment.GetEnvironmentVariable("LOCALAPPDATA") is not null
+                    ? Path.Combine(Environment.GetEnvironmentVariable("LOCALAPPDATA")!, "cache")
+                    : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "cache"),
+            var platform when platform == OSPlatform.OSX
+                => Path.Combine(Home, "Library", "Caches"),
+            _ => Path.Combine(Home, ".cache") // Linux/FreeBSD
+        };
+
+    private static OSPlatform? GetCurrentPlatform()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return OSPlatform.Windows;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return OSPlatform.OSX;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return OSPlatform.Linux;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD)) return OSPlatform.FreeBSD;
+
+        return null;
+    }
+    
+    private static string Home
+    {
+        get
+        {
+            var homeEnv = GetCurrentPlatform() switch
+            {
+                var platform when platform == OSPlatform.Windows => Environment.GetEnvironmentVariable("USERPROFILE") ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                _ => Environment.GetEnvironmentVariable("HOME") // Unix*
+            };
+            return homeEnv ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        }
+    }
+    
     public async Task TrackEvent(string eventName, Dictionary<string, object>? props = null)
     {
         var eventData = new EventData(eventName, props);

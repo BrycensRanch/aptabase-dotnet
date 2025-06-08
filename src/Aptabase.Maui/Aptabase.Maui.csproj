@@ -47,7 +47,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Aptabase.Core\Aptabase.Core.csproj" />
-		<PackageReference Include="DotNext.Threading" Version="5.9.0" />
 	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
 	  <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.70" />
 	</ItemGroup>

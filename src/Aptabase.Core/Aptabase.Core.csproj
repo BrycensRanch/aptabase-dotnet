@@ -27,8 +27,7 @@
         <None Include="..\..\etc\logo.png" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DotNext.Threading" Version="5.9.0" />
+        <PackageReference Include="DotNext.Threading" Version="5.2.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-        <PackageReference Include="Xdg.Directories" Version="0.1.2" />
     </ItemGroup>
 </Project>
