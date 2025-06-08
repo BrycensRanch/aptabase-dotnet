@@ -1,7 +1,6 @@
 ## 0.2.0
 
-* Add `Aptabase.Core` for generic .NET support (Does not support crash reporter)
-* Use [XDG.Directories](https://www.nuget.org/packages/Xdg.Directories) Cache Directory across all .NET SDKs (This was a requirement for Aptabase.Core) 
+* Add `Aptabase.Core` for generic `.NET 8` support (Does not support crash reporter)
 
 ## 0.1.0
 
