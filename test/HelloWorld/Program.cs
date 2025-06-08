@@ -1,16 +1,19 @@
-﻿
-using Aptabase.Core;
+﻿using Aptabase.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-// Microsoft dependency injection semantics
 var services = new ServiceCollection();
 
-services.AddLogging(); 
+services.AddLogging(builder =>
+{
+    builder.AddConsole();
+    builder.SetMinimumLevel(LogLevel.Debug);
+});
 
-services.UseAptabase("<YOUR_APP_KEY>", new AptabaseOptions
+services.UseAptabase("A-US-0332858461", new AptabaseOptions
 {
 #if DEBUG
-            IsDebugMode = true,
+    IsDebugMode = true,
 #else
     IsDebugMode = false,
 #endif
@@ -18,17 +21,34 @@ services.UseAptabase("<YOUR_APP_KEY>", new AptabaseOptions
     EnablePersistence = true,
 });
 
-// Build the service provider
 var serviceProvider = services.BuildServiceProvider();
 
 // Get an instance of the Aptabase service
 var aptabaseClient = serviceProvider.GetRequiredService<IAptabaseClient>(); 
 
-// Track a sample event
-await aptabaseClient.TrackEvent("HelloWorldEvent", new Dictionary<string, object> 
-{
-    { "Message", "Hello from Aptabase!" }
-});
 
 Console.WriteLine("Hello, World!");
+// Track a sample event
+await aptabaseClient.TrackEvent("app_started");
+
+// OR 
+Console.Write("What's your favorite color? ");
+
+var favoriteColor = Console.ReadLine()?.Trim().ToLowerInvariant();
+
+if (!string.IsNullOrWhiteSpace(favoriteColor))
+{
+    await aptabaseClient.TrackEvent("favorite_color", new Dictionary<string, object>
+    {
+        { "color", favoriteColor }
+    });
+
+    Console.WriteLine("Thanks! Your response was logged.");
+}
+else
+{
+    Console.WriteLine("No input received.");
+}
+
+
 Console.ReadKey();
