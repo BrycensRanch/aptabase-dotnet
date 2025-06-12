@@ -3,9 +3,13 @@ using DotNext.Threading.Channels;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Channels;
 
 namespace Aptabase.Core;
+
+[JsonSerializable(typeof(EventData))]
+internal partial class AptabaseContext : JsonSerializerContext;
 
 public class AptabasePersistentClient : IAptabaseClient
 {
@@ -165,18 +169,18 @@ public class AptabasePersistentClient : IAptabaseClient
         {
             try
             {
-                return JsonSerializer.Deserialize(await ExtractJsonObject(input, token), typeof(EventData)) as EventData ?? throw new NullReferenceException();
+                return JsonSerializer.Deserialize(await ExtractJsonObject(input, token), AptabaseContext.Default.EventData) ?? throw new NullReferenceException();
             }
             catch
             {
                 // NOTE must not throw any deserialization failure or ReliableReader.MoveNextAsync() will never consume the event!
                 return new EventData(_invalidPersistedEvent);
             }
-        }
+        } 
 
         protected override ValueTask SerializeAsync(EventData input, Stream output, CancellationToken token)
         {
-            JsonSerializer.Serialize(output, input);
+            JsonSerializer.Serialize(output, input, AptabaseContext.Default.EventData);
             output.WriteByte((byte)'\n');   // append jsonl/ndjson separator
             output.Flush();
             return new ValueTask();

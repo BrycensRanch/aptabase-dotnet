@@ -65,7 +65,7 @@ internal class AptabaseClientBase : IAsyncDisposable
         eventData.SessionId = _sessionId;
         eventData.SystemProps = _sysInfo;
 
-        var body = JsonContent.Create(eventData);
+        var body = JsonContent.Create(eventData, AptabaseContext.Default.EventData);
 
         var response = await _http.PostAsync("/api/v0/event", body);
 
