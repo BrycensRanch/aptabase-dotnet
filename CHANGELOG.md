@@ -1,4 +1,4 @@
-## 0.2.2
+## 0.2.1
 
 * Add NativeAOT support by using JsonSerializer source generator API.
 
