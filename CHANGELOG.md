@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Add NativeAOT support by using JsonSerializer source generator API.
+
 ## 0.2.0
 
 * Add `Aptabase.Core` for generic `.NET 8` support (Does not support crash reporter)

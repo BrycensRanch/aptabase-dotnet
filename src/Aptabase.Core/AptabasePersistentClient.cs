@@ -1,11 +1,15 @@
 ﻿using System.Runtime.InteropServices;
-using DotNext.Threading.Channels;
-using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Channels;
+using DotNext.Threading.Channels;
+using Microsoft.Extensions.Logging;
 
 namespace Aptabase.Core;
+
+[JsonSerializable(typeof(EventData))]
+internal partial class AptabaseContext : JsonSerializerContext;
 
 public class AptabasePersistentClient : IAptabaseClient
 {
@@ -57,20 +61,22 @@ public class AptabasePersistentClient : IAptabaseClient
 
         return null;
     }
-    
+
     private static string Home
     {
         get
         {
             var homeEnv = GetCurrentPlatform() switch
             {
-                var platform when platform == OSPlatform.Windows => Environment.GetEnvironmentVariable("USERPROFILE") ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                var platform when platform == OSPlatform.Windows => Environment.GetEnvironmentVariable("USERPROFILE") ??
+                                                                    Environment.GetFolderPath(Environment.SpecialFolder
+                                                                        .UserProfile),
                 _ => Environment.GetEnvironmentVariable("HOME") // Unix*
             };
             return homeEnv ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
     }
-    
+
     public async Task TrackEvent(string eventName, Dictionary<string, object>? props = null)
     {
         var eventData = new EventData(eventName, props);
@@ -105,8 +111,9 @@ public class AptabasePersistentClient : IAptabaseClient
 
                     if (_channel.RemainingCount > _maxPersistedEvents)
                     {
-                        _logger?.LogError("ProcessEvents flushed {Name}@{Timestamp}", eventData.EventName, eventData.Timestamp);
-                        
+                        _logger?.LogError("ProcessEvents flushed {Name}@{Timestamp}", eventData.EventName,
+                            eventData.Timestamp);
+
                         continue;
                     }
 
@@ -139,7 +146,9 @@ public class AptabasePersistentClient : IAptabaseClient
         {
             _cts.Cancel();
         }
-        catch { }
+        catch
+        {
+        }
 
         _channel.Writer.Complete();
 
@@ -165,7 +174,8 @@ public class AptabasePersistentClient : IAptabaseClient
         {
             try
             {
-                return JsonSerializer.Deserialize(await ExtractJsonObject(input, token), typeof(EventData)) as EventData ?? throw new NullReferenceException();
+                return JsonSerializer.Deserialize(await ExtractJsonObject(input, token),
+                    AptabaseContext.Default.EventData) ?? throw new NullReferenceException();
             }
             catch
             {
@@ -176,8 +186,8 @@ public class AptabasePersistentClient : IAptabaseClient
 
         protected override ValueTask SerializeAsync(EventData input, Stream output, CancellationToken token)
         {
-            JsonSerializer.Serialize(output, input);
-            output.WriteByte((byte)'\n');   // append jsonl/ndjson separator
+            JsonSerializer.Serialize(output, input, AptabaseContext.Default.EventData);
+            output.WriteByte((byte)'\n'); // append jsonl/ndjson separator
             output.Flush();
             return new ValueTask();
         }
@@ -190,6 +200,7 @@ public class AptabasePersistentClient : IAptabaseClient
             {
                 sb.Append((char)b[0]);
             }
+
             return sb.ToString();
         }
     }
