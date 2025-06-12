@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>Aptabase.Core</PackageId>
-        <Version>0.2.0</Version>
+        <PackageId>BrycensRanch.Aptabase.Core</PackageId>
+        <Version>0.2.1</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
         <TargetFramework>net8.0</TargetFramework>
@@ -12,7 +12,8 @@
         <PackageProjectUrl>https://aptabase.com</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>logo.png</PackageIcon>
-        <RepositoryUrl>https://github.com/aptabase/aptabase-dotnet</RepositoryUrl>
+        <RepositoryUrl>https://github.com/BrycensRanch/aptabase-dotnet</RepositoryUrl>
+        <IsTrimmable>false</IsTrimmable>
         <RepositoryType>git</RepositoryType>
         <PackageTags>analytics, privacy, dotnet, sdk, telemetry</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
