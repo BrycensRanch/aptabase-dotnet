@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Fix JsonElement not being included in AptabaseContext for NativeAOT.
+
 ## 0.2.1
 
 * Add NativeAOT support by using JsonSerializer source generator API.

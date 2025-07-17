@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Aptabase.Core;
 
 [JsonSerializable(typeof(EventData))]
+[JsonSerializable(typeof(JsonElement))]
 internal partial class AptabaseContext : JsonSerializerContext;
 
 public class AptabasePersistentClient : IAptabaseClient
