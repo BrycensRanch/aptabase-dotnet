@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace Aptabase.Core;
 
@@ -81,7 +81,8 @@ internal class AptabaseClientBase : IAsyncDisposable
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            _logger?.LogError("Failed to perform TrackEvent due to {StatusCode} and response body {Body}", response.StatusCode, responseBody);
+            _logger?.LogError("Failed to perform TrackEvent due to {StatusCode} and response body {Body}",
+                response.StatusCode, responseBody);
         }
     }
 
@@ -119,7 +120,8 @@ internal class AptabaseClientBase : IAsyncDisposable
         {
             if (string.IsNullOrEmpty(options?.Host))
             {
-                _logger?.LogWarning("Host parameter must be defined when using Self-Hosted App Key. Tracking will be disabled.");
+                _logger?.LogWarning(
+                    "Host parameter must be defined when using Self-Hosted App Key. Tracking will be disabled.");
 
                 return null;
             }
