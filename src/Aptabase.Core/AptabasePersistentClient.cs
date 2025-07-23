@@ -1,5 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
+using System.Xml;
+using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Channels;
@@ -10,6 +12,27 @@ namespace Aptabase.Core;
 
 [JsonSerializable(typeof(EventData))]
 [JsonSerializable(typeof(JsonElement))]
+[JsonSerializable(typeof(JsonNode))]
+[JsonSerializable(typeof(JsonDocument))]
+[JsonSerializable(typeof(XmlNode))]
+[JsonSerializable(typeof(XmlElement))]
+[JsonSerializable(typeof(XmlDocument))]
+[JsonSerializable(typeof(Dictionary<string, object>))]
+[JsonSerializable(typeof(Dictionary<string, string>))]
+[JsonSerializable(typeof(List<EventData>))]
+[JsonSerializable(typeof(List<KeyValuePair<string, string>>))]
+[JsonSerializable(typeof(object))]
+[JsonSerializable(typeof(string))]
+[JsonSerializable(typeof(Guid))]
+[JsonSerializable(typeof(DateTimeOffset))]
+[JsonSerializable(typeof(bool))]
+[JsonSerializable(typeof(int))]
+[JsonSerializable(typeof(double))]
+[JsonSerializable(typeof(long))]
+[JsonSerializable(typeof(Int128))]
+[JsonSerializable(typeof(ulong))]
+[JsonSerializable(typeof(uint))]
+[JsonSerializable(typeof(ushort))]
 internal partial class AptabaseContext : JsonSerializerContext;
 
 public class AptabasePersistentClient : IAptabaseClient
