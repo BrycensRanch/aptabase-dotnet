@@ -1,3 +1,7 @@
+## 0.2.3
+
+* Handle UnauthorizedException in sandboxed environments on Linux.
+
 ## 0.2.2
 
 * Fix JsonElement not being included in AptabaseContext for NativeAOT.
