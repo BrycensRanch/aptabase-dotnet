@@ -15,7 +15,7 @@ internal static class DeviceDetect
             var os when OperatingSystem.IsMacOS() => GetMacDeviceModel(),
             var os when OperatingSystem.IsLinux() => GetLinuxDeviceModel(),
             var os when OperatingSystem.IsFreeBSD() => GetFreeBSDDeviceModel(),
-            _ => "" // Unsupported Device Detection Platform
+            _ => string.Empty // Unsupported Device Detection Platform
         };
     }
 
@@ -26,15 +26,15 @@ internal static class DeviceDetect
         try
         {
             using var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
-            if (key == null) return "";
+            if (key == null) return string.Empty;
 
             var model = key.GetValue(registryValueName) as string;
 
-            return !string.IsNullOrEmpty(model) ? model : "";
+            return !string.IsNullOrEmpty(model) ? model : string.Empty;
         }
         catch
         {
-            return "";
+            return string.Empty;
         }
     }
     private static string GetMacDeviceModel()
@@ -49,12 +49,12 @@ internal static class DeviceDetect
         };
 
         using var process = Process.Start(processStartInfo);
-        if (process == null) return "";
+        if (process == null) return string.Empty;
 
         var output = process.StandardOutput.ReadToEnd();
         var modelIdentifier = output.Trim();
 
-        return string.IsNullOrEmpty(modelIdentifier) ? "" : modelIdentifier;
+        return string.IsNullOrEmpty(modelIdentifier) ? string.Empty : modelIdentifier;
     }
 
     private static string GetLinuxDeviceModel()
@@ -64,9 +64,9 @@ internal static class DeviceDetect
             var model = File.ReadAllText("/sys/class/dmi/id/product_name");
             return model.Trim();
         }
-        catch (IOException)
+        catch (Exception)
         {
-            return ""; 
+            return string.Empty; 
         }
     }
 
@@ -82,11 +82,11 @@ internal static class DeviceDetect
         };
 
         using var process = Process.Start(processStartInfo);
-        if (process == null) return "";
+        if (process == null) return string.Empty;
 
         var output = process.StandardOutput.ReadToEnd();
         var deviceModel = output.Trim();
 
-        return string.IsNullOrEmpty(deviceModel) ? "" : deviceModel;
+        return string.IsNullOrEmpty(deviceModel) ? string.Empty : deviceModel;
     }
 }
